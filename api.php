@@ -55,7 +55,12 @@ if(!function_exists("save_base64_image")) {
           exit("Sorry, Storage Initiation failed");
       }
 
-      $uploadPath="{$S3Params['folder']}/".time()."_".$finalFile;
+      if($S3Params['folder'] && strlen($S3Params['folder'])>0) {
+        $uploadPath="{$S3Params['folder']}/".time()."_".$finalFile;
+      } else {
+        $uploadPath=time()."_".$finalFile;
+      }
+      
       $b=$s3->putObjectFile($tempDir.$finalFile, $S3Params['bucket'], $uploadPath, $S3Params['security_policy']);
 
       $photoURI='https://s3.amazonaws.com/'.$S3Params['bucket'].'/'.$uploadPath;
