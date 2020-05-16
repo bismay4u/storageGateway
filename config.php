@@ -1,7 +1,9 @@
 <?php
+if(!defined("ROOT")) die("This file can't be accessed directly");
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
 
 $S3Config=[
   "test-dev-data"=>[
@@ -13,6 +15,6 @@ $S3Config=[
   ]
 ];
 
-$tempDir=__DIR__."/tmp/";
-$POSTDATAPARAM="data";
+$_ENV['TEMPDIR'] = __DIR__."/tmp/";
+$_ENV['POSTDATAPARAM'] = "data";
 ?>
