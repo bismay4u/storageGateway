@@ -51,9 +51,20 @@ if(!function_exists("save_base64_image")) {
       S3::$useSSL = false;
       $s3 = new S3($S3Params['accessKeyId'], $S3Params['secretAccessKey']);
 
-      if(!$s3->putBucket($S3Params['bucket'], S3::ACL_PUBLIC_READ)) {
-          exit("Sorry, Storage Initiation failed");
+      // using v4 signature
+      $s3->setSignatureVersion('v4');
+      
+      // List your buckets:
+      //echo "S3::listBuckets(): ".print_r($s3->listBuckets(), 1)."\n";exit();
+
+      $bucketList = $s3->listBuckets();
+      if(!in_array($S3Params['bucket'],$bucketList)) {
+        if(!$s3->putBucket($S3Params['bucket'], $S3Params['bucket_security_policy'])) {
+            exit("Sorry, Storage Initiation failed");
+        }
       }
+      //$bucketList = $s3->listBuckets();
+      //print_r($bucketList);exit();
 
       if($S3Params['folder'] && strlen($S3Params['folder'])>0) {
         $uploadPath="{$S3Params['folder']}/".time()."_".$finalFile;
@@ -61,7 +72,7 @@ if(!function_exists("save_base64_image")) {
         $uploadPath=time()."_".$finalFile;
       }
       
-      $b=$s3->putObjectFile($tempDir.$finalFile, $S3Params['bucket'], $uploadPath, $S3Params['security_policy']);
+      $b = $s3->putObjectFile($tempDir.$finalFile, $S3Params['bucket'], $uploadPath, $S3Params['security_policy']);
 
       $photoURI='https://s3.amazonaws.com/'.$S3Params['bucket'].'/'.$uploadPath;
       

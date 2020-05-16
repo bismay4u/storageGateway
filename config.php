@@ -7,12 +7,14 @@ ini_set('display_errors', 1);
 
 $S3Config=[
   "test-dev-data"=>[
-    "accessKeyId"=> '', 
-    "secretAccessKey"=> '',
-    "bucket"=>"bucket01",
-    "folder"=>"test1",
-    "targetURI"=>""
-  ]
+  		"accessKeyId"=> '', 
+	    "secretAccessKey"=> '',
+	    "bucket"=>"bucket1",
+	    "folder"=>"dev",
+	    "bucket_security_policy"=> S3::ACL_PUBLIC_READ,
+	    "security_policy"=> S3::ACL_PUBLIC_READ,
+	    "targetURI"=>"https://pixy-dev.s3.us-east-2.amazonaws.com/"
+  	]
 ];
 
 $_ENV['TEMPDIR'] = __DIR__."/tmp/";
