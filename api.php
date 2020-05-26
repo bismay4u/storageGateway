@@ -45,7 +45,12 @@ if(!function_exists("save_base64_image")) {
     if(isset($_POST[$POSTDATAPARAM])) {
       $S3Params=$S3Config[$_GET['s3key']];
 
-      $fname=md5(time().rand());
+      if(isset($_POST['fname']) && strlen($_POST['fname'])>0) {
+        $fname = $_POST['fname'];
+      } else {
+        $fname=md5(time().rand());
+      }
+      
       $finalFile = save_base64_image($_POST[$POSTDATAPARAM],$fname,$tempDir);
 
       S3::$useSSL = false;
@@ -66,10 +71,12 @@ if(!function_exists("save_base64_image")) {
       //$bucketList = $s3->listBuckets();
       //print_r($bucketList);exit();
 
-      if($S3Params['folder'] && strlen($S3Params['folder'])>0) {
-        $uploadPath="{$S3Params['folder']}/".time()."_".$finalFile;
+      if($_POST['folder'] && strlen($_POST['folder'])>0) {
+        $uploadPath="{$_POST['folder']}/".$finalFile;
+      } elseif($S3Params['folder'] && strlen($S3Params['folder'])>0) {
+        $uploadPath="{$S3Params['folder']}/".$finalFile;
       } else {
-        $uploadPath=time()."_".$finalFile;
+        $uploadPath=$finalFile;
       }
       
       $b = $s3->putObjectFile($tempDir.$finalFile, $S3Params['bucket'], $uploadPath, $S3Params['security_policy']);
