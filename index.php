@@ -1,7 +1,7 @@
 <?php
 define("ROOT", __DIR__."/");
 
-if(!isset($_POST)) {
+if(!isset($_POST) || count($_POST)<=0) {
   echo "S3 Storage Service";
   exit();
 }
