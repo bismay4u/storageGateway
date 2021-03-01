@@ -71,9 +71,9 @@ if(!function_exists("save_base64_image")) {
       //$bucketList = $s3->listBuckets();
       //print_r($bucketList);exit();
 
-      if($_POST['folder'] && strlen($_POST['folder'])>0) {
+      if(isset($_POST['folder']) && $_POST['folder'] && strlen($_POST['folder'])>0) {
         $uploadPath="{$_POST['folder']}/".$finalFile;
-      } elseif($S3Params['folder'] && strlen($S3Params['folder'])>0) {
+      } elseif(isset($S3Params['folder']) && $S3Params['folder'] && strlen($S3Params['folder'])>0) {
         $uploadPath="{$S3Params['folder']}/".$finalFile;
       } else {
         $uploadPath=$finalFile;
