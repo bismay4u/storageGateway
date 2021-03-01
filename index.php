@@ -12,8 +12,12 @@ if(!isset($_GET['s3key']) || !isset($S3Config[$_GET['s3key']])) {
 if(!is_dir($_ENV['TEMPDIR'])) @mkdir($_ENV['TEMPDIR']);
 if(!is_dir($_ENV['TEMPDIR'])) die("Temp Dir Missing ...");
 
-//replace photo with S3 URI
-$photoURI = uploadPhotoToS3($S3Config);
+if(isset($_POST)) {
+  //replace photo with S3 URI
+  $photoURI = uploadPhotoToS3($S3Config);
+} else {
+  echo "S3 Storage Service";
+}
 
 
 if(isset($_GET['forward']) && strlen($_GET['forward'])>0) {
